@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  photo_db:
+    image: mysql:5.7
+    container_name: photo_db
+    restart: always
+    expose:
+      - 3306
+    environment:
+      MYSQL_ROOT_PASSWORD: photo
+      MYSQL_DATABASE: photo
+      MYSQL_USER: photo
+      MYSQL_PASSWORD: photo
+    volumes:
+      - "./init.sql:/docker-entrypoint-initdb.d/init.sql"
+      - photo-gallery:/var/lib/mysql
+    networks:
+      - internal
+
+  photo_gallery:
+    build: .
+    container_name: photo_gallery
+    restart: always
+    volumes:
+      - "./public:/app/public"
+    depends_on:
+      - photo_db
+    ports:
+      - "3000:3000"
+    networks:
+      default:
+      internal:
+
+networks:
+  default:
+  internal:
+    internal: true
+
+volumes:
+  photo-gallery:
