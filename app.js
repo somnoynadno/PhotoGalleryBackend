@@ -5,6 +5,7 @@ let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 let formData = require("express-form-data");
 let os = require("os");
+let cors = require('cors')
 
 let indexRouter = require('./routes/index');
 let app = express();
@@ -13,6 +14,7 @@ let app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+app.use(cors())
 app.use(logger('dev'));
 
 const options = {
